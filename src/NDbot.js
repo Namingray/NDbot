@@ -29,7 +29,7 @@ class NDbot {
       var results = images.filter(image => {
         return image.type === 'image/jpeg';
       });
-      message.channel.sendFile(results[idx].url, '', message.author + ', "' + string + '" result:');
+      message.channel.sendFile(results[idx > results.length ? idx - results.length : idx].url, '', message.author + ', "' + string + '" result:');
     }
   }
 
@@ -50,6 +50,8 @@ class NDbot {
         case '+img':
           this._imgSearch.search(params).then(images => {
             this._processImage(message, images, 0, params);
+          }, reason => {
+            message.channel.sendMessage(reason);
           });
           break;
         case '+rimg':
@@ -58,6 +60,8 @@ class NDbot {
 
           this._imgSearch.search(params, page).then(images => {
             this._processImage(message, images, idx, params);
+          }, reason => {
+            message.channel.sendMessage(reason);
           });
           break;
         default:
