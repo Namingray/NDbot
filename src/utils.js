@@ -10,7 +10,7 @@ class Utils {
    * @param {number} max - max number
    * @return {int} a random integer
    */
-  getRandomInt(min, max) {
+  static getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
@@ -21,7 +21,7 @@ class Utils {
    * @param {number} max - max number
    * @return {number} a random floating point number
    */
-  getRandom(min, max) {
+  static getRandom(min, max) {
     return Math.random() * (max - min) + min;
   }
 }
