@@ -9,6 +9,7 @@
   "author": "Namingray",
   "license": "Apache-2.0",
   "dependencies": {
-    "discord.js": "^9.1.1"
+    "discord.js": "^9.1.1",
+    "google-images": "^1.0.0"
   }
 }

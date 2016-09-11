@@ -1,4 +1,4 @@
 'use strict';
-var ndBot = new (require("./bot/NDbot"))();
+var ndBot = new (require("./src/NDbot"))();
 
 ndBot.start();
