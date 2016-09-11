@@ -1,17 +1,22 @@
 'use strict';
-var TOKEN = 'MjI0NDUwMTMyNjA5ODU5NTg0.CrarJA.GxfCnQQ7sGgPWrGCJEv0KHho-pI';
 
 var Discord = require('discord.js');
 var ImgSearch = require('./plugins/google/imgSearch.js');
-var Utils = require('./utils');
+var YouTube = require('./plugins/google/youtube.js');
+var Utils = require('./utils.js');
 
 /** Class representing a discord bot */
 class NDbot {
 
-  /** Create a bot */
-  constructor() {
+  /** Create a bot
+   *
+   * @param {string} args - Discord App token
+   */
+  constructor(args) {
     this._ndBot = new Discord.Client();
-    this._imgSearch = new ImgSearch();
+    this._imgSearch = new ImgSearch(args[3], args[4]);
+    this._yt = new YouTube(args[4]);
+    this._token = args[2];
   }
 
   /**
@@ -35,7 +40,7 @@ class NDbot {
 
   /** Start a bot */
   start() {
-    this._ndBot.login(TOKEN);
+    this._ndBot.login(this._token);
 
     this._ndBot.on('ready', () => {
       console.log('NDbot is ready!');
@@ -46,7 +51,7 @@ class NDbot {
       var command = msg.substr(0, msg.indexOf(' ')) || msg;
       var params = msg.substr(msg.indexOf(' ') + 1);
 
-      switch (command) {
+      switch (command.toLowerCase()) {
         case '+img':
           this._imgSearch.search(params).then(images => {
             this._processImage(message, images, 0, params);
@@ -63,6 +68,9 @@ class NDbot {
           }, reason => {
             message.channel.sendMessage(reason);
           });
+          break;
+        case '+yt':
+          this._yt.search(params, message);
           break;
         default:
       }

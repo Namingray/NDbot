@@ -4,9 +4,13 @@ var googleImages = require('google-images');
 /** Google images search class */
 class ImgSearch {
 
-  /** Create search engine */
-  constructor() {
-    this.client = googleImages('000758309876721190547:2henfhr4o18', 'AIzaSyDMbE53QXhIXJKAiMXFdwmzzpgDkg168Tg');
+  /** Create search engine
+   *
+   * @param {string} SEid - Google Search Engine ID
+   * @param {string} GoogleAPIkey - Google API key
+   */
+  constructor(SEid, GoogleAPIkey) {
+    this._client = googleImages(SEid, GoogleAPIkey);
   }
 
   /** Search an image
@@ -16,7 +20,7 @@ class ImgSearch {
    * @return {Promise} - A promise that return an array of images if resolved
    */
   search(query, page) {
-    return this.client.search(query, {
+    return this._client.search(query, {
       page: page || 1
     });
   }
