@@ -3,6 +3,7 @@
 var Discord = require('discord.js');
 var ImgSearch = require('./plugins/google/imgSearch.js');
 var YouTube = require('./plugins/google/youtube.js');
+var Steam = require('./plugins/games/steam.js');
 var Utils = require('./utils.js');
 
 /** Class representing a discord bot */
@@ -13,9 +14,10 @@ class NDbot {
    * @param {string} config - Configuration object
    */
   constructor(config) {
-    this._ndBot = new Discord.Client();
+    this.ndBot = new Discord.Client();
     this._imgSearch = new ImgSearch(config.googleSEId, config.googleAPIKey);
     this._yt = new YouTube(config.googleAPIKey);
+    this._steam = new Steam(config.steamAPIKey, this);
     this._token = config.discordToken;
   }
 
@@ -44,13 +46,13 @@ class NDbot {
 
   /** Start a bot */
   start() {
-    this._ndBot.login(this._token);
+    this.ndBot.login(this._token);
 
-    this._ndBot.on('ready', () => {
+    this.ndBot.on('ready', () => {
       console.log('NDbot is ready!');
     });
 
-    this._ndBot.on('message', message => {
+    this.ndBot.on('message', message => {
       var msg = message.content;
       var command = msg.substr(0, msg.indexOf(' ')) || msg;
       var params = msg.substr(msg.indexOf(' ') + 1);

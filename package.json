@@ -12,6 +12,7 @@
     "discord.js": "^9.1.1",
     "google-images": "^1.0.0",
     "googleapis": "^12.4.0",
+    "request": "^2.74.0",
     "rfr": "^1.2.3"
   }
 }

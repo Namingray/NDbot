@@ -17,6 +17,10 @@ if (!config.googleAPIKey) {
   console.log('Please, set googleAPIKey in config.js file!');
   process.exit();
 }
+if (!config.steamAPIKey) {
+  console.log('Please, set steamAPIKey in config.js file!');
+  process.exit();
+}
 
 var ndBot = new (require("./src/NDbot"))(config);
 ndBot.start();
