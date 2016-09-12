@@ -34,7 +34,7 @@ class NDbot {
       var results = images.filter(image => {
         return image.type === 'image/jpeg';
       });
-      message.channel.sendFile(results[idx > results.length ? idx - results.length : idx].url, '', message.author + ', "' + string + '" result:');
+      message.channel.sendFile(results[idx > results.length ? idx - results.length : idx].url.split('?')[0], '', message.author + ', "' + string + '" result:');
     }
   }
 

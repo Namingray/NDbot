@@ -1,13 +1,20 @@
 'use strict';
 
-if (!process.argv[2]) {
-  console.log("Please, pass Discord App Token as first command line argument");
+var config = require('./config.js');
+
+if (!config.language) {
+  config.language = 'en';
+}
+if (!config.discrodToken) {
+  console.log('Please, set discordToken in config.js file!');
   process.exit();
-} else if (!process.argv[3]) {
-  console.log("Please, pass Search Engine ID as second command line argument");
+}
+if (!config.googleSEId) {
+  console.log('Please, set googleSEId in config.js file!');
   process.exit();
-} else if (!process.argv[4]) {
-  console.log("Please, pass Google API key as third command line argument");
+}
+if (!config.googleAPIKey) {
+  console.log('Please, set googleAPIKey in config.js file!');
   process.exit();
 }
 
