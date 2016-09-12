@@ -18,19 +18,21 @@ class YouTube {
 
   /** Search a video
    *
-   * @param {string} query - search query
-   * @param {Message} message - message object
+   * @param {Message} message - Message object
+   * @param {NDbot} bot - Bot object
+   * @param {string} query - Search query
+   *
    */
-  search(query, message) {
+  search(message, bot, query) {
     this._youtube.search.list({
       part: 'snippet',
       q: query,
       maxResults: 1
     }, (err, data) => {
       if (err) {
-        message.channel.sendMessage(message.author + ', something went wrong. Try again!');
+        bot.sendText(message, 'something went wrong. Try again!', true);
       } else {
-        message.channel.sendMessage(message.author + ', your video: ' + 'https://youtu.be/' + data.items[0].id.videoId);
+        bot.sendText(message, 'your video: https://youtu.be/' + data.items[0].id.videoId, true);
       }
     });
   }

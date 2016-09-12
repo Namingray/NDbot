@@ -10,32 +10,36 @@ class NDbot {
 
   /** Create a bot
    *
-   * @param {string} args - Discord App token
+   * @param {string} config - Configuration object
    */
-  constructor(args) {
+  constructor(config) {
     this._ndBot = new Discord.Client();
-    this._imgSearch = new ImgSearch(args[3], args[4]);
-    this._yt = new YouTube(args[4]);
-    this._token = args[2];
+    this._imgSearch = new ImgSearch(config.googleSEId, config.googleAPIKey);
+    this._yt = new YouTube(config.googleAPIKey);
+    this._token = config.discordToken;
   }
 
   /**
-   * Process array of image and sent proper image to channel.
+   * Send text message to text channel.
    *
-   * @param {Message} message - message object
-   * @param {Array<Image>} images - array of images
-   * @param {int} idx - image idx
-   * @param {string} string - string query
+   * @param {Message} message - Message object
+   * @param {string} text - text message
+   * @param {boolean} author - add sender name to the begin of message
    */
-  _processImage(message, images, idx, string) {
-    if (images.length === 0) {
-      message.channel.sendMessage(message.author + ', try again');
-    } else {
-      var results = images.filter(image => {
-        return image.type === 'image/jpeg';
-      });
-      message.channel.sendFile(results[idx > results.length ? idx - results.length : idx].url.split('?')[0], '', message.author + ', "' + string + '" result:');
-    }
+  sendText(message, text, author) {
+    message.channel.sendMessage((author ? message.author + ', ' : '') + text);
+  }
+
+  /**
+   * Send image to text channel.
+   *
+   * @param {Message} message - Message object
+   * @param {string} url - image url
+   * @param {string} text - text message
+   * @param {boolean} author - add sender name to the begin of message
+   */
+  sendImage(message, url, text, author) {
+    message.channel.sendMessage(url, '', (author ? message.author + ', ' : '') + text);
   }
 
   /** Start a bot */
@@ -53,24 +57,15 @@ class NDbot {
 
       switch (command.toLowerCase()) {
         case '+img':
-          this._imgSearch.search(params).then(images => {
-            this._processImage(message, images, 0, params);
-          }, reason => {
-            message.channel.sendMessage(reason);
-          });
+          this._imgSearch.search(message, this, params, 1, 0);
           break;
         case '+rimg':
           var idx = Utils.getRandomInt(0, 9);
           var page = Utils.getRandomInt(0, 99);
-
-          this._imgSearch.search(params, page).then(images => {
-            this._processImage(message, images, idx, params);
-          }, reason => {
-            message.channel.sendMessage(reason);
-          });
+          this._imgSearch.search(message, this, params, page, idx);
           break;
         case '+yt':
-          this._yt.search(params, message);
+          this._yt.search(message, this, params);
           break;
         default:
       }

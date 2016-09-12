@@ -15,13 +15,26 @@ class ImgSearch {
 
   /** Search an image
    *
-   * @param {string} query - search query
-   * @param {int} page - page number
-   * @return {Promise} - A promise that return an array of images if resolved
+   * @param {Message} message - Message object
+   * @param {NDbot} bot - Bot object
+   * @param {string} query - Search query
+   * @param {int} page - Page number
+   * @param {int} idx - Index of image on a page
    */
-  search(query, page) {
-    return this._client.search(query, {
-      page: page || 1
+  search(message, bot, query, page, idx) {
+    this._client.search(query, {
+      page: page
+    }).then(images => {
+      if (images.length === 0) {
+        bot.sendText(message, 'try again!', true);
+      } else {
+        var results = images.filter(image => {
+          return image.type === 'image/jpeg';
+        });
+        bot.sendImage(message, results[idx > results.length ? idx - results.length : idx].url.split('?')[0], '"' + query + '" result:', true);
+      }
+    }, reason => {
+      NDbot.sendText(message, reason, false);
     });
   }
 }

@@ -5,7 +5,7 @@ var config = require('./config.js');
 if (!config.language) {
   config.language = 'en';
 }
-if (!config.discrodToken) {
+if (!config.discordToken) {
   console.log('Please, set discordToken in config.js file!');
   process.exit();
 }
@@ -18,5 +18,5 @@ if (!config.googleAPIKey) {
   process.exit();
 }
 
-var ndBot = new (require("./src/NDbot"))(process.argv);
+var ndBot = new (require("./src/NDbot"))(config);
 ndBot.start();
