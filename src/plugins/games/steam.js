@@ -32,7 +32,7 @@ class Steam {
     }, 1000);
     setInterval(() => {
       this._chooseRandomGame();
-    }, 20000);
+    }, 600000);
   }
 
   /** Create Steam class
@@ -53,26 +53,55 @@ class Steam {
     });
   }
 
-  /** Get info about current game
+  /** Send game info to the channel
+   *
+   * @param {Message} message - Message object
+   * @param {Object} game - Game info object
+   * @param {String} textInitial - Initial text for message
+   */
+  _sendGameInfo(message, game, textInitial) {
+    var textMessage = textInitial + '**' + game.name +
+        '**\n```Markdown\nНазвание: ' + game.name +
+        (game.genres ? '\nЖанр: ' + game.genres.map(elem => {
+          return elem.description;
+        }).join(', ') : '') +
+        '\nРазработчик: ' + game.developers.join(', ') +
+        '\nИздатель: ' + game.publishers.join(', ') +
+        '\nДата выхода: ' + game.release_date.date +
+        '\n\n---\n' + game.detailed_description.replace(/<\/?[^>]+(>|$)/g, '') + '```';
+    this._bot.sendImage(message, game.header_image.split('?')[0], textMessage, false);
+  }
+
+  /** Get info about current bot game
    *
    * @param {Message} message - Message object
    */
   getCurrentGameInfo(message) {
     if (this._game) {
-      try {
-        var textMessage = 'Я сейчас играю в: **' + this._game.name +
-            '**\n```Markdown\nНазвание: ' + this._game.name +
-            '\nЖанр: ' + this._game.genres.map(elem => {
-              return elem.description;
-            }).join(', ') +
-            '\nРазработчик: ' + this._game.developers.join(', ') +
-            '\nИздатель: ' + this._game.publishers.join(', ') +
-            '\nДата выхода: ' + this._game.release_date.date +
-            '\n\n---\n' + this._game.detailed_description.replace(/<\/?[^>]+(>|$)/g, '') + '```';
-        console.log(textMessage);
-        this._bot.sendImage(message, this._game.header_image.split('?')[0], textMessage, false);
-      } catch (e) {
-        console.log(e);
+      this._sendGameInfo(message, this._game, 'Я сейчас играю в ');
+    }
+  }
+
+  /** Get info about current user game
+   *
+   * @param {Message} message - Message object
+   * @param {User} user - User object
+   */
+  getUserGameInfo(message, user) {
+    var gameName = user.game;
+    if (gameName) {
+      var gameInfo = this._games.find(game => {
+        return game.name === gameName.name;
+      });
+      if (gameInfo) {
+        request('http://store.steampowered.com/api/appdetails?appids=' + gameInfo.appid + '&l=russian', (error, response, body) => {
+          var result = JSON.parse(body)[gameInfo.appid];
+          if (result.success === true && result.data.type === 'game') {
+            this._sendGameInfo(message, result.data, user.username + ' сейчас играет в ');
+          }
+        });
+      } else {
+        this._bot.sendText(message, 'к сожалению, игры, в которую играет ' + user.username + ' нет в базе данных Steam. Скорее всего это богомерзкий World of Warcraft', true);
       }
     }
   }
