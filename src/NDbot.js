@@ -79,6 +79,14 @@ class NDbot {
           case '+game':
             if (msg === params) {
               this._steam.getCurrentGameInfo(message);
+            } else {
+              var guild = message.guild;
+              if (guild) {
+                var user = guild.members.find(member => {
+                  return member.user.username === params;
+                });
+                this._steam.getUserGameInfo(message, user.user);
+              }
             }
             break;
           default:
