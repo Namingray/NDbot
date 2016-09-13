@@ -21,7 +21,9 @@ class Steam {
     setTimeout(() => {
       this._bot.setStatus(this._game.name);
     }, 5000);
-    setInterval(this._chooseRandomGame, 600000);
+    setInterval(() => {
+      this._chooseRandomGame();
+    }, 600000);
   }
 
   /** Create Steam class

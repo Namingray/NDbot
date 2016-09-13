@@ -55,8 +55,8 @@ class NDbot {
 
   /** Start a bot */
   start() {
+    this._ndBot.destroy();
     this._ndBot.login(this._token);
-
     this._ndBot.on('ready', () => {
       console.log('NDbot is ready!');
       this._ndBot.on('message', message => {
