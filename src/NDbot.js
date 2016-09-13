@@ -14,11 +14,20 @@ class NDbot {
    * @param {string} config - Configuration object
    */
   constructor(config) {
-    this.ndBot = new Discord.Client();
-    this._imgSearch = new ImgSearch(config.googleSEId, config.googleAPIKey);
-    this._yt = new YouTube(config.googleAPIKey);
-    this._steam = new Steam(config.steamAPIKey, this);
+    this._ndBot = new Discord.Client();
+    this._imgSearch = new ImgSearch(this, config.googleSEId, config.googleAPIKey);
+    this._yt = new YouTube(this, config.googleAPIKey);
+    this._steam = new Steam(this, config.steamAPIKey);
     this._token = config.discordToken;
+  }
+
+  /**
+   * Set status.
+   *
+   * @param {string} game - Game name
+   */
+  setStatus(game) {
+    this._ndBot.user.setStatus('online', game);
   }
 
   /**
@@ -46,31 +55,35 @@ class NDbot {
 
   /** Start a bot */
   start() {
-    this.ndBot.login(this._token);
+    this._ndBot.login(this._token);
 
-    this.ndBot.on('ready', () => {
+    this._ndBot.on('ready', () => {
       console.log('NDbot is ready!');
-    });
+      this._ndBot.on('message', message => {
+        var msg = message.content;
+        var command = msg.substr(0, msg.indexOf(' ')) || msg;
+        var params = msg.substr(msg.indexOf(' ') + 1);
 
-    this.ndBot.on('message', message => {
-      var msg = message.content;
-      var command = msg.substr(0, msg.indexOf(' ')) || msg;
-      var params = msg.substr(msg.indexOf(' ') + 1);
-
-      switch (command.toLowerCase()) {
-        case '+img':
-          this._imgSearch.search(message, this, params, 1, 0);
-          break;
-        case '+rimg':
-          var idx = Utils.getRandomInt(0, 9);
-          var page = Utils.getRandomInt(0, 99);
-          this._imgSearch.search(message, this, params, page, idx);
-          break;
-        case '+yt':
-          this._yt.search(message, this, params);
-          break;
-        default:
-      }
+        switch (command.toLowerCase()) {
+          case '+img':
+            this._imgSearch.search(message, params, 1, 0);
+            break;
+          case '+rimg':
+            var idx = Utils.getRandomInt(0, 9);
+            var page = Utils.getRandomInt(0, 99);
+            this._imgSearch.search(message, params, page, idx);
+            break;
+          case '+yt':
+            this._yt.search(message, params);
+            break;
+          case '+game':
+            if (msg === params) {
+              this._steam.getCurrentGameInfo(message);
+            }
+            break;
+          default:
+        }
+      });
     });
   }
 }
