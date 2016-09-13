@@ -32,7 +32,7 @@ class ImgSearch {
         var results = images.filter(image => {
           return image.type === 'image/jpeg';
         });
-        this._bot.sendImage(message, results[idx > results.length ? idx - results.length : idx].url.split('?')[0], '"' + query + '" result:', true);
+        this._bot.sendImage(message, results[idx > results.length ? idx - results.length : idx].url.split('?')[0], '', false);
       }
     }, reason => {
       this._bot.sendText(message, reason, false);

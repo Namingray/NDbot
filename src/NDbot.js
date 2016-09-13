@@ -50,7 +50,7 @@ class NDbot {
    * @param {boolean} author - add sender name to the begin of message
    */
   sendImage(message, url, text, author) {
-    message.channel.sendMessage(url, '', (author ? message.author + ', ' : '') + text);
+    message.channel.sendFile(url, '', (author ? message.author + ', ' : '') + text);
   }
 
   /** Start a bot */
