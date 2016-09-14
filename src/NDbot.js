@@ -5,6 +5,7 @@ var ImgSearch = require('./plugins/google/imgSearch.js');
 var YouTube = require('./plugins/google/youtube.js');
 var Steam = require('./plugins/games/steam.js');
 var Utils = require('./utils.js');
+var ytdl = require('ytdl-core');
 
 /** Class representing a discord bot */
 class NDbot {
@@ -19,6 +20,8 @@ class NDbot {
     this._yt = new YouTube(this, config.googleAPIKey);
     this._steam = new Steam(this, config.steamAPIKey);
     this._token = config.discordToken;
+    this._voiceChannel = null;
+    this._voiceReceiver = null;
   }
 
   /**
@@ -51,6 +54,24 @@ class NDbot {
    */
   sendImage(message, url, text, author) {
     message.channel.sendFile(url, '', (author ? message.author + ', ' : '') + text);
+  }
+
+  /**
+   * Join voice channel
+   *
+   * @param {Message} message - Message object
+   * @param {Function} callback - Callback
+   */
+  _joinVoiceChannel(message, callback = () => {}) {
+    var channel = message.member.voiceChannel;
+
+    if (channel) {
+      channel.join().then(connection => {
+        this._voiceChannel = channel;
+        this._voiceReceiver = connection.createReceiver();
+        this.sendText(message, 'player is ready!', true);
+      }).then(callback);
+    }
   }
 
   /** Start a bot */
@@ -87,6 +108,42 @@ class NDbot {
                 });
                 this._steam.getUserGameInfo(message, user.user);
               }
+            }
+            break;
+          case '+p':
+          case '+player':
+            try {
+              if (msg === params) {
+                this._joinVoiceChannel(message);
+              } else
+              switch (params) {
+                case 'l':
+                case 'leave':
+                  if (this._voiceChannel) {
+                    this._voiceChannel.leave();
+                  }
+                  break;
+                case 's':
+                case 'stop':
+                  this._voiceChannel.player.stop();
+                  this._voiceReceiver.connection.stopPlaying();
+                  break;
+                default:
+                  if (this._voiceChannel === null) {
+                    this._joinVoiceChannel(message, () => {
+                      var streamOptions = {
+                        seek: 0,
+                        volume: 0.1
+                      };
+                      var stream = ytdl(params, {
+                        filter: 'audioonly'
+                      });
+                      this._voiceReceiver.connection.playStream(stream, streamOptions);
+                    });
+                  }
+              }
+            } catch (e) {
+              console.log(e);
             }
             break;
           default:

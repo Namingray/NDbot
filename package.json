@@ -13,6 +13,7 @@
     "google-images": "^1.0.0",
     "googleapis": "^12.4.0",
     "request": "^2.74.0",
-    "rfr": "^1.2.3"
+    "rfr": "^1.2.3",
+    "ytdl-core": "^0.7.17"
   }
 }
