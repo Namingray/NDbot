@@ -1,26 +1,12 @@
 'use strict';
 
-var config = require('./config.js');
+process.title = 'NDbot';
 
-if (!config.language) {
-  config.language = 'en';
-}
-if (!config.discordToken) {
-  console.log('Please, set discordToken in config.js file!');
+try {
+  var config = require('./config.json');
+  var ndBot = new (require("./src/NDbot"))(config);
+  ndBot.start();
+} catch (e) {
+  console.log('\nNDbot can not find config.json file or it is corrupted, please resolve this issue and restart the bot\n\n' + e.message);
   process.exit();
 }
-if (!config.googleSEId) {
-  console.log('Please, set googleSEId in config.js file!');
-  process.exit();
-}
-if (!config.googleAPIKey) {
-  console.log('Please, set googleAPIKey in config.js file!');
-  process.exit();
-}
-if (!config.steamAPIKey) {
-  console.log('Please, set steamAPIKey in config.js file!');
-  process.exit();
-}
-
-var ndBot = new (require("./src/NDbot"))(config);
-ndBot.start();

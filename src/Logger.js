@@ -41,7 +41,8 @@ var logger = new Winston.Logger({
       level: 'debug',
       json: false
     })
-  ]
+  ],
+  exitOnError: true
 });
 
 module.exports = logger;
