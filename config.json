@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "discordToken": "MjI0NDUwMTMyNjA5ODU5NTg0.CrarJA.GxfCnQQ7sGgPWrGCJEv0KHho-pI",
+    "prefix": "+",
+    "language": "ru"
+  },
+  "apiKeys": {
+    "google": {
+      "apiKey": "AIzaSyDMbE53QXhIXJKAiMXFdwmzzpgDkg168Tg",
+      "seId": "000758309876721190547:2henfhr4o18"
+    }
+  },
+  "permissions": {
+    "admin": [
+      "198691360298106881"
+    ]
+  }
+}

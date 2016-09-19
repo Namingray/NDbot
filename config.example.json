@@ -1,0 +1,18 @@
+{
+  "settings": {
+    "discordToken": "Discord Bot token",
+    "prefix": "Command prefix",
+    "language": "ru | en"
+  },
+  "apiKeys": {
+    "google": {
+      "apiKey": "A google API key",
+      "seId": "Search Engine ID"
+    }
+  },
+  "permissions": {
+    "admin": [
+      "user_id"
+    ]
+  }
+}
