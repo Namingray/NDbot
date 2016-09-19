@@ -106,7 +106,7 @@ class NDbot {
       Logger.info('Logged in as ' + this.ndBot.user.username + '/#' + this.ndBot.user.id);
       setInterval(() => {
         this._chooseGame();
-      }, 6000);
+      }, 600000);
     });
 
     this.ndBot.on('message', message => {
