@@ -1,5 +1,5 @@
-
-*.iml
-node_modules
-.idea
-config.js
+/logs/*
+/node_modules/
+/.idea/
+/config.json
+/*.iml

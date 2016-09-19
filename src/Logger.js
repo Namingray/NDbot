@@ -16,7 +16,7 @@ var logger = new Winston.Logger({
     new (require('winston-daily-rotate-file'))({
       humanReadableUnhandledException: true,
       name: 'file:exceptions',
-      filename: path.resolve(__dirname, '..', '..', 'logs/-exceptions.log'),
+      filename: path.resolve(__dirname, '..', 'logs/-exceptions.log'),
       timestamp: tsFormat,
       datePattern: 'dd-MM-yyyy',
       prepend: true,
@@ -25,7 +25,7 @@ var logger = new Winston.Logger({
     }),
     new (require('winston-daily-rotate-file'))({
       name: 'file:errors',
-      filename: path.resolve(__dirname, '..', '..', 'logs/-errors.log'),
+      filename: path.resolve(__dirname, '..', 'logs/-errors.log'),
       timestamp: tsFormat,
       datePattern: 'dd-MM-yyyy',
       prepend: true,
@@ -34,7 +34,7 @@ var logger = new Winston.Logger({
     }),
     new (require('winston-daily-rotate-file'))({
       name: 'file:console',
-      filename: path.resolve(__dirname, '..', '..', 'logs/-console.log'),
+      filename: path.resolve(__dirname, '..', 'logs/-console.log'),
       timestamp: tsFormat,
       datePattern: 'dd-MM-yyyy',
       prepend: true,
