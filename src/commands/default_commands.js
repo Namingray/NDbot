@@ -63,4 +63,21 @@ Commands.game = {
   }
 };
 
+Commands.emote = {
+  name: 'emote',
+  aliases: ['e'],
+  help: '',
+  func: function(message, query, bot) {
+    var emoteContainer = bot.emotes.find(emote => {
+      return query === emote.code.toLowerCase();
+    });
+    if (emoteContainer === undefined) {
+      emoteContainer = bot.emotes.find(emote => {
+        return emote.code.toLowerCase().indexOf(query) !== -1;
+      });
+    }
+    message.channel.sendFile('https://static-cdn.jtvnw.net/emoticons/v1/' + emoteContainer.image_id + '/3.0', emoteContainer.code + '.jpg');
+  }
+};
+
 exports.commands = Commands;

@@ -20,6 +20,7 @@ class NDbot {
     this._aliases = {};
     this.game = {};
     this.games = [];
+    this.emotes = [];
     this._voiceChannel = null;
     this._voiceReceiver = null;
 
@@ -54,6 +55,26 @@ class NDbot {
         var steamResponse = JSON.parse(body);
         Logger.info('Added ' + steamResponse.applist.apps.length + ' steam games.');
         this.games = steamResponse.applist.apps;
+      }
+    });
+
+    request('https://twitchemotes.com/api_cache/v2/subscriber.json', (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        try {
+          JSON.parse(body);
+        } catch (e) {
+          Logger.error('The TwitchEmotes API returned a bad response');
+          return;
+        }
+        var tEmotesResponse = JSON.parse(body);
+        for (let channel in tEmotesResponse.channels) {
+          if (tEmotesResponse.channels.hasOwnProperty(channel)) {
+            for (let i = 0; i < tEmotesResponse.channels[channel].emotes.length; i++) {
+              this.emotes.push(tEmotesResponse.channels[channel].emotes[i]);
+            }
+          }
+        }
+        Logger.info('Added ' + this.emotes.length + ' twitch emotes');
       }
     });
   }
@@ -110,8 +131,12 @@ class NDbot {
     });
 
     this.ndBot.on('message', message => {
-      var msg = message.content;
+      var msg = message.content.toLowerCase();
       if (msg[0] === Config.settings.prefix) {
+        message.delete().then(msg => {
+          Logger.info('Deleted command "' + msg.content + '" from user "' + msg.author.username + '"');
+        });
+
         msg = msg.substring(1);
         var command = msg.substr(0, msg.indexOf(' ')) || msg;
         var params = msg.substr(msg.indexOf(' ') + 1);
