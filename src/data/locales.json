@@ -1,0 +1,24 @@
+{
+  "en": {
+    "sendMessageError": "An error occurred while trying to execute this command:",
+    "wrongCommand": "There is no such command. Use {prefix}help for available commands.",
+    "steamError": "The Steam API returned a bad response. Try a little bit later.",
+    "youtubeError": "The YouTube API returned a bad response. Try a little bit later.",
+    "imgError": "The Image Search API returned a bad response. Try a little bit later.",
+    "notFound": "Nothing was founded on your request, sorry.",
+    "noEmote": "There is no such emote in database.",
+    "steamGame": "I'm playing **{name}**\n```Markdown\nTitle: {name}\nGenre: {genres}\nDeveloper: 'developers\nPublisher: {publishers}\nRelease Date: {release_date}\n\n---\n{detailed_description}'```"
+  },
+  "ru": {
+    "sendMessageError": "При выполнении команды возникла следуюшая ошибка:",
+    "wrongCommand": "Такой команды не существует. Воспользойтесь {prefix}help для отображения доступных комманд.",
+    "steamError": "Проблема с Steam API. Попробуйте позже.",
+    "youtubeError": "Проблема с YouTube API. Попробуйте позже.",
+    "imgError": "Проблема с Image Search API. Попробуйте позже.",
+    "notFound": "К сожалению, по вашему запросу ничего не найдено.",
+    "noEmote": "К сожалению, такой эмоции нет в базе данных.",
+    "steamGame": "Я сейчас играю в **{name}**\n```Markdown\nНазвание: {name}\nЖанр: {genres}\nРазработчик: {developers}\nИздатель: {publishers}\nДата выхода: {release_date}\n\n---\n{detailed_description}'```"
+  }
+}
+
+

@@ -7,6 +7,7 @@ var Discord = require('discord.js');
 var Logger = require('./Logger.js');
 var Commands = directory(module, './commands');
 var Config = rfr('config.json');
+var Locales = rfr('src/data/locales.json');
 var Utils = rfr('src/utils.js');
 
 /** Class representing a discord bot */
@@ -21,6 +22,7 @@ class NDbot {
     this.game = {};
     this.games = [];
     this.emotes = [];
+    this.locale = Locales[Config.settings.language];
     this._voiceChannel = null;
     this._voiceReceiver = null;
 
@@ -77,6 +79,10 @@ class NDbot {
         Logger.info('Added ' + this.emotes.length + ' twitch emotes');
       }
     });
+
+    setTimeout(() => {
+      this._start();
+    }, 10000);
   }
 
   /**
@@ -119,7 +125,7 @@ class NDbot {
   }
 
   /** Start a bot */
-  start() {
+  _start() {
     this.ndBot.login(Config.settings.discordToken);
 
     this.ndBot.on('ready', () => {
@@ -162,12 +168,12 @@ class NDbot {
             try {
               this._commands[command].func(message, params, this);
             } catch (e) {
-              message.channel.sendMessage('An error occured while trying to execute this command.\n```' + e + '```');
+              message.channel.sendMessage(this.locales.sendMessageError + '\n```' + e + '```');
               Logger.error('Command error, thrown by ' + this._commands[command] + ': ' + e);
             }
           }
         } else {
-          message.reply('There is no such command. Use ' + Config.settings.prefix + 'help for available commands');
+          message.reply(this.locales.wrongCommand.replace('{prefix}', Config.settings.prefix));
         }
       }
     });

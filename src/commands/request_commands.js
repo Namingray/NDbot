@@ -14,7 +14,7 @@ Commands.youtube = {
         try {
           JSON.parse(body);
         } catch (e) {
-          message.channel.sendMessage('The YouTube API returned a bad response.');
+          message.channel.sendMessage(bot.locale.youtubeError);
           return;
         }
         var ytResponse = JSON.parse(body);
@@ -27,20 +27,20 @@ Commands.youtube = {
 Commands.img = {
   name: 'img',
   help: '',
-  func: function(message, query) {
+  func: function(message, query, bot) {
     request('https://www.googleapis.com/customsearch/v1?q=' + query + '&num=1&start=1&imgSize=medium&searchType=image&fileType=jpg&key=' + Config.apiKeys.google.apiKey + '&cx=' + Config.apiKeys.google.seId, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         try {
           JSON.parse(body);
         } catch (e) {
-          message.channel.sendMessage('The Search API returned a bad response.');
+          message.channel.sendMessage(bot.locale.imgError);
           return;
         }
         var gImageResponse = JSON.parse(body);
         if (gImageResponse.items.length) {
           message.channel.sendFile(gImageResponse.items[0].link);
         } else {
-          message.reply('Nothing was founded on your request, sorry');
+          message.reply(bot.locale.notFound);
         }
       }
     });
@@ -50,7 +50,7 @@ Commands.img = {
 Commands.rimg = {
   name: 'rimg',
   help: '',
-  func: function(message, query) {
+  func: function(message, query, bot) {
     var idx = Utils.getRandomInt(0, 9);
     var page = Utils.getRandomInt(0, 99);
     request('https://www.googleapis.com/customsearch/v1?q=' + query + '&num=' + idx + '&start=' + page + '&imgSize=medium&searchType=image&fileType=jpg&key=' + Config.apiKeys.google.apiKey + '&cx=' + Config.apiKeys.google.seId, (error, response, body) => {
@@ -58,14 +58,14 @@ Commands.rimg = {
         try {
           JSON.parse(body);
         } catch (e) {
-          message.channel.sendMessage('The Search API returned a bad response.');
+          message.channel.sendMessage(bot.locale.imgError);
           return;
         }
         var gImageResponse = JSON.parse(body);
         if (gImageResponse.items.length) {
           message.channel.sendFile(gImageResponse.items[0].link);
         } else {
-          message.reply('Nothing was founded on your request, sorry');
+          message.reply(bot.locale.notFound);
         }
       }
     });
