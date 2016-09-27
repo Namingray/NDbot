@@ -76,7 +76,11 @@ Commands.emote = {
         return emote.code.toLowerCase().indexOf(query) !== -1;
       });
     }
-    message.channel.sendFile('https://static-cdn.jtvnw.net/emoticons/v1/' + emoteContainer.image_id + '/3.0', emoteContainer.code + '.jpg');
+    if (emoteContainer === undefined) {
+      message.reply("There is no such emote in database");
+    } else {
+      message.channel.sendFile('https://static-cdn.jtvnw.net/emoticons/v1/' + emoteContainer.image_id + '/3.0', emoteContainer.code + '.jpg');
+    }
   }
 };
 
