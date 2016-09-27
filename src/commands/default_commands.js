@@ -79,7 +79,7 @@ Commands.emote = {
     if (emoteContainer === undefined) {
       message.reply("There is no such emote in database");
     } else {
-      message.channel.sendFile('https://static-cdn.jtvnw.net/emoticons/v1/' + emoteContainer.image_id + '/3.0', emoteContainer.code + '.jpg');
+      message.channel.sendFile('https://static-cdn.jtvnw.net/emoticons/v1/' + emoteContainer.image_id + '/3.0', emoteContainer.code + '.png');
     }
   }
 };
